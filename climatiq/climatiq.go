@@ -1,6 +1,7 @@
 package climatiq
 
 import (
+	"fmt"
 	"net/http"
 	"net/url"
 )
@@ -77,4 +78,14 @@ func WithAuthToken(t string) clientOpts {
 }
 
 // Do is used to make the actual http requests
-func (c *Client) Do(r *http.Request) {}
+func (c *Client) Do(r *http.Request) (*http.Response, error) {
+
+	// Set JSON headers
+	r.Header.Set("Content-Type", "application/json; charset=utf-8")
+	r.Header.Set("Accept", "application/json; charset=utf-8")
+
+	// Add authorization header with API token
+	r.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.token))
+
+	return c.client.Do(r)
+}
