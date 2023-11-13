@@ -38,6 +38,11 @@ func NewClient(opts ...clientOpts) *Client {
 		userAgent: "go-climatiq",
 	}
 
+	// add options
+	for _, opt := range opts {
+		opt(c)
+	}
+
 	return c
 }
 
