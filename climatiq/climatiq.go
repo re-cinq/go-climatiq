@@ -24,7 +24,7 @@ type Client struct {
 	// user agent used to make requests
 	userAgent string
 
-	//token is used for authentication to the climatiq API
+	// token is used for authentication to the climatiq API
 	token string
 }
 
@@ -60,6 +60,14 @@ func WithUserAgent(u string) clientOpts {
 func WithClient(cli *http.Client) clientOpts {
 	return func(c *Client) {
 		c.client = cli
+	}
+}
+
+// WithAuthtoken is an option to add an API KEY as a bearer
+// token to requests
+func WithAuthToken(t string) clientOpts {
+	return func(c *Client) {
+		c.token = t
 	}
 }
 
