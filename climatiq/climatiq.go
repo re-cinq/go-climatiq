@@ -33,8 +33,9 @@ type Client struct {
 func NewClient(opts ...clientOpts) *Client {
 	url, _ := url.Parse(defaultBaseURL)
 	c := &Client{
-		client:  &http.Client{},
-		baseURL: url,
+		client:    &http.Client{},
+		baseURL:   url,
+		userAgent: "go-climatiq",
 	}
 
 	return c
