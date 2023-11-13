@@ -1,0 +1,178 @@
+{
+  "current_page": 1,
+  "last_page": 671,
+  "total_results": 671,
+  "results": [
+    {
+      "activity_id": "cpu-provider_aws-region_af_south_1",
+      "id": "c41332a9-aac8-4268-a054-cbc26f4d8518",
+      "name": "AWS (af-south-1) CPU",
+      "category": "Cloud Computing - CPU",
+      "sector": "Information and Communication",
+      "source": "CCF",
+      "source_link": "https://www.cloudcarbonfootprint.org/docs/methodology/#compute",
+      "source_dataset": "Derived from CCF models",
+      "uncertainty": null,
+      "year": 2021,
+      "year_released": 2021,
+      "region": "ZA-CPT",
+      "region_name": "Cape Town, WC, ZA",
+      "description": "Emission intensity for usage of a single CPU in kg CO2e per hour for the Amazon Web Services data centers in the given location using the assumptions and grid emissions factors available in the source as of date accessed. It is assumed that vCPU utilization is 50%. The source does not clarify if the kgCO2e value is calculated using either IPCC Fourth Assessment Report (AR4) or IPCC Fifth Assessment Report (AR5) methodologies.",
+      "unit_type": "NumberOverTime",
+      "unit": "kg/CPU-hour",
+      "source_lca_activity": "use_phase",
+      "data_quality_flags": [
+        "notable_methodological_variance"
+      ],
+      "access_type": "public",
+      "supported_calculation_methods": [
+        "ar4"
+      ],
+      "factor": 0.002196,
+      "factor_calculation_method": "ar4",
+      "factor_calculation_origin": "source",
+      "constituent_gases": {
+        "co2e_total": 0.002196,
+        "co2e_other": null,
+        "co2": null,
+        "ch4": null,
+        "n2o": null
+      }
+    }
+  ],
+  "possible_filters": {
+    "year": [
+      2022,
+      2021
+    ],
+    "source": [
+      {
+        "source": "CCF",
+        "datasets": [
+          "Derived from CCF models"
+        ]
+      }
+    ],
+    "region": [
+      {
+        "id": "AU-SYD",
+        "name": "Sydney, NSW, AU"
+      },
+      {
+        "id": "BH-AMH",
+        "name": "Al Manamah, 13, BH"
+      },
+      {
+        "id": "BR-SAO",
+        "name": "São Paulo, SP, BR"
+      },
+      {
+        "id": "CA-MTR",
+        "name": "Montreal, QC, CA"
+      },
+      {
+        "id": "CN-BJS",
+        "name": "Beijing, BJ, CN"
+      },
+      {
+        "id": "CN-NX",
+        "name": "Ningxia Huizu Zizhiqu, CN"
+      },
+      {
+        "id": "DE-FRA",
+        "name": "Frankfurt am Main, HE, DE"
+      },
+      {
+        "id": "FR-PAR",
+        "name": "Paris, 75, FR"
+      },
+      {
+        "id": "GB-LON",
+        "name": "London, LND, GB"
+      },
+      {
+        "id": "GLOBAL",
+        "name": "Global"
+      },
+      {
+        "id": "HK-HKG",
+        "name": "Hong Kong, HK"
+      },
+      {
+        "id": "IE-DUB",
+        "name": "Dublin, IE"
+      },
+      {
+        "id": "IN-BOM",
+        "name": "Mumbai (ex Bombay), MH, IN"
+      },
+      {
+        "id": "IT-MIL",
+        "name": "Milano, IT"
+      },
+      {
+        "id": "JP-OSA",
+        "name": "Osaka, 27, JP"
+      },
+      {
+        "id": "JP-TYO",
+        "name": "Tokyo, 13, JP"
+      },
+      {
+        "id": "KR-SEL",
+        "name": "Seoul, 11, KR"
+      },
+      {
+        "id": "SE-STO",
+        "name": "Stockholm, AB, SE"
+      },
+      {
+        "id": "SG-SIN",
+        "name": "Singapore, SG"
+      },
+      {
+        "id": "US",
+        "name": "United States"
+      },
+      {
+        "id": "US-GIR",
+        "name": "Gilroy, CA, US"
+      },
+      {
+        "id": "US-OH",
+        "name": "Ohio, US"
+      },
+      {
+        "id": "US-OR",
+        "name": "Oregon, US"
+      },
+      {
+        "id": "US-VA",
+        "name": "Virginia, US"
+      },
+      {
+        "id": "ZA-CPT",
+        "name": "Cape Town, WC, ZA"
+      }
+    ],
+    "category": [
+      "Cloud Computing - CPU"
+    ],
+    "sector": [
+      "Information and Communication"
+    ],
+    "unit_type": [
+      "NumberOverTime"
+    ],
+    "source_lca_activity": [
+      "upstream-end_of_life",
+      "use_phase"
+    ],
+    "access_type": [
+      "public"
+    ],
+    "data_quality_flags": [
+      "notable_methodological_variance"
+    ]
+  }
+}
