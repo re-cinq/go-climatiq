@@ -41,11 +41,11 @@ type SearchResponse struct {
 	CurrentPage  int             `json:"current_page"`
 	LastPage     int             `json:"last_page"`
 	TotalResults int             `json:"total_results"`
-	// TODO: possibleFilters
+	// TODO: add possibleFilters
 }
 
 type SearchResults struct {
-	Id           string `json:"id"`
+	ID           string `json:"id"`
 	ActivityID   string `json:"activity_id"`
 	AccessType   string `json:"access_type"`
 	Name         string `json:"name"`
@@ -59,14 +59,14 @@ type SearchResults struct {
 	Region       string `json:"region"`
 	RegionName   string `json:"region_name"`
 	Description  string `json:"description"`
-	//UnitType                    []UnitTypes        `json:"unit_type"` // TODO
+	// UnitType                    []UnitTypes        `json:"unit_type"` // TODO
 	Unit                        string   `json:"unit"`
 	SourceLCAActivity           string   `json:"source_lca_activity"`
 	SupportedCalculationMethods []string `json:"supported_calculation_methods"`
 	Factor                      float64  `json:"factor"` // number or null
-	//FactorCalculationMethod     ConversionValue    `json:"factor_calculation_method"` // TODO
-	FactorCalculationOrigin string `json:"factor_calculation_origin"` //climatiq or source
-	//ConstituentGases            []ConstituentGases `json:"constituent_gases"`         // TODO
+	// FactorCalculationMethod     ConversionValue    `json:"factor_calculation_method"` // TODO
+	FactorCalculationOrigin string `json:"factor_calculation_origin"` // climatiq or source
+	// ConstituentGases            []ConstituentGases `json:"constituent_gases"`         // TODO
 }
 
 // Search GETS the emission factors based on the query or parameters provided
@@ -78,7 +78,7 @@ func (c *Client) Search(ctx context.Context, searchReq *SearchRequest) (*SearchR
 
 	searchURL := c.baseURL.String() + "search?" + paramsURL
 
-	req, err := http.NewRequest("GET", searchURL, nil)
+	req, err := http.NewRequestWithContext(context.Background(), "GET", searchURL, http.NoBody)
 	if err != nil {
 		return nil, err
 	}
@@ -89,7 +89,7 @@ func (c *Client) Search(ctx context.Context, searchReq *SearchRequest) (*SearchR
 	}
 
 	if resp.StatusCode != 200 {
-		return nil, fmt.Errorf("error bad statuscode from server: %d\n", resp.StatusCode)
+		return nil, fmt.Errorf("error bad statuscode from server: %d", resp.StatusCode)
 	}
 
 	defer resp.Body.Close()
@@ -104,8 +104,6 @@ func (c *Client) Search(ctx context.Context, searchReq *SearchRequest) (*SearchR
 		return nil, err
 	}
 
-	fmt.Println(err)
-	fmt.Printf("RESP: %+v\n", searchResponse)
 	return &searchResponse, nil
 }
 
