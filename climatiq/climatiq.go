@@ -32,10 +32,10 @@ type Client struct {
 // NewClient returns an instantiated instance of a client
 // with the ability to override values with various options
 func NewClient(opts ...clientOpts) *Client {
-	url, _ := url.Parse(defaultBaseURL)
+	u, _ := url.Parse(defaultBaseURL)
 	c := &Client{
 		client:    &http.Client{},
-		baseURL:   url,
+		baseURL:   u,
 		userAgent: "go-climatiq",
 	}
 
@@ -48,10 +48,10 @@ func NewClient(opts ...clientOpts) *Client {
 }
 
 // WithBaseURL is an option to overwrite the BaseURL
-func WithBaseURL(u string) clientOpts {
-	url, _ := url.Parse(u)
+func WithBaseURL(s string) clientOpts {
+	u, _ := url.Parse(s)
 	return func(c *Client) {
-		c.baseURL = url
+		c.baseURL = u
 	}
 }
 
@@ -79,7 +79,6 @@ func WithAuthToken(t string) clientOpts {
 
 // Do is used to make the actual http requests
 func (c *Client) Do(r *http.Request) (*http.Response, error) {
-
 	// Set JSON headers
 	r.Header.Set("Content-Type", "application/json; charset=utf-8")
 	r.Header.Set("Accept", "application/json; charset=utf-8")
