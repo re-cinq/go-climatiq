@@ -11,44 +11,26 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// baseURLPath is a non-empty Client baseURL path to use during tests,
-// to ensure relative URLs are used for all endpoints. See go-github
-// issue #752. The setupMockClient() functionality has been heavily inspired by
-// the go-github library setup() function.
-// https://github.com/google/go-github/blob/master/github/github_test.go#L37
-
-const testBaseURL = "/api-v3"
-
 // setupMockClient sets up a test HTTP server along with a climatiq.client that is
 // configured to talk to that test server. Tests should register handlers on
 // mux which provide mock responses for the API method being tested.
-func setupMockClient() (client *Client, mux *http.ServeMux, serverURL string, teardown func()) {
+// The setupMockClient() functionality has been heavily inspired by
+// the go-github library setup() function.
+func setupMockClient() (client *Client, mux *http.ServeMux, teardown func()) {
 	// mux is the HTTP request multiplexer used with the test server.
 	mux = http.NewServeMux()
 
-	// We want to ensure that tests catch mistakes where the endpoint URL is
-	// specified as absolute rather than relative. It only makes a difference
-	// when there's a non-empty base URL path. So, use that. See issue #752.
 	apiHandler := http.NewServeMux()
-	apiHandler.Handle(testBaseURL+"/", http.StripPrefix(testBaseURL, mux))
-	apiHandler.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-		fmt.Fprintln(os.Stderr, "FAIL: Client.BaseURL path prefix is not preserved in the request URL:")
-		fmt.Fprintln(os.Stderr)
-		fmt.Fprintln(os.Stderr, "\t"+req.URL.String())
-		fmt.Fprintln(os.Stderr)
-		fmt.Fprintln(os.Stderr, "\tDid you accidentally use an absolute endpoint URL rather than relative?")
-		fmt.Fprintln(os.Stderr, "\tSee https://github.com/google/go-github/issues/752 for information.")
-		http.Error(w, "Client.BaseURL path prefix is not preserved in the request URL.", http.StatusInternalServerError)
-	})
+	apiHandler.Handle("/", mux)
 
 	// server is a test HTTP server used to provide mock API responses.
 	server := httptest.NewServer(apiHandler)
 
 	// client is the climatiq client being tested and is
 	// configured to use test server.
-	client = NewClient(WithBaseURL(server.URL + testBaseURL + "/"))
+	client = NewClient(WithBaseURL(server.URL + "/"))
 
-	return client, mux, server.URL, server.Close
+	return client, mux, server.Close
 }
 
 // getMockPayload loads one of the json files into a []byte
@@ -123,7 +105,7 @@ func TestParseSearchRequest(t *testing.T) {
 func TestSearchRequest(t *testing.T) {
 	t.Run("pass: query with unit types", func(t *testing.T) {
 		a := assert.New(t)
-		client, mux, _, teardown := setupMockClient()
+		client, mux, teardown := setupMockClient()
 		defer teardown()
 
 		// The json payload is the response from the following search API query
@@ -150,6 +132,7 @@ func TestSearchRequest(t *testing.T) {
 		}
 
 		resp, err := client.Search(context.Background(), &sr)
+
 		a.Nil(err)
 		a.Equal(resp.Results[0].Category, "Cloud Computing - CPU")
 		a.Equal(resp.Results[0].Factor, float64(0.002196))
