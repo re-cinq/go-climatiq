@@ -10,8 +10,6 @@ import (
 	"github.com/google/go-querystring/query"
 )
 
-const maxResultsPerPage = 100
-
 // SearchRequest contains query parameters to get emission
 // factors. All fields are transformed into a query string
 // that is sent in a GET request.
@@ -114,11 +112,6 @@ func parseSearchRequest(req *SearchRequest) (string, error) {
 	// docs for more information
 	if req.DataVersion == "" {
 		return "", fmt.Errorf("error: dataVersion must be set")
-	}
-
-	// TODO: DO we let the climatiq API handle these errors instead of us?
-	if req.ResultsPerPage > maxResultsPerPage {
-		return "", fmt.Errorf("error: resultsPerPage cannot be greater than %d", maxResultsPerPage)
 	}
 
 	v, err := query.Values(req)
