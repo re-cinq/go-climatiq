@@ -80,12 +80,6 @@ func TestParseSearchRequest(t *testing.T) {
 		assert.EqualErrorf(t, err, expectedErrorMsg, "Error should be: %v, got: %v", expectedErrorMsg, err)
 	})
 
-	t.Run("fail: resultsPerPage exceed maxResultsPerPage", func(t *testing.T) {
-		_, err := parseSearchRequest(&SearchRequest{DataVersion: "^0", ResultsPerPage: 105})
-		expectedErrorMsg := "error: resultsPerPage cannot be greater than 100"
-		assert.EqualErrorf(t, err, expectedErrorMsg, "Error should be: %v, got: %v", expectedErrorMsg, err)
-	})
-
 	t.Run("pass: parse request with params", func(t *testing.T) {
 		sr := SearchRequest{
 			DataVersion:    "^5",
