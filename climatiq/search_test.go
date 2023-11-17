@@ -45,61 +45,94 @@ func getMockPayload(payloadType string) ([]byte, error) {
 }
 
 func TestParseSearchRequest(t *testing.T) {
-	t.Run("pass: dataVersion is set", func(t *testing.T) {
-		_, err := parseSearchRequest(&SearchRequest{DataVersion: "^5"})
-		assert.Nil(t, err)
-	})
+	tests := []struct {
+		name     string
+		sr       SearchRequest
+		hasError bool
+		expRes   string
+		expErr   string
+	}{
+		{
+			name:     "pass: dataVersion is set",
+			sr:       SearchRequest{DataVersion: "^5"},
+			hasError: false,
+			expRes:   "data_version=%5E5",
+			expErr:   "",
+		},
+		{
+			name:     "fail: dataVersion not set",
+			sr:       SearchRequest{},
+			hasError: true,
+			expRes:   "",
+			expErr:   "error: dataVersion must be set",
+		},
+		{
+			name: "fail: dataVersion not set multiple params",
+			sr: SearchRequest{
+				Category: "cloud compute",
+				Region:   "Switzerland",
+			},
+			hasError: true,
+			expRes:   "",
+			expErr:   "error: dataVersion must be set",
+		},
+		{
+			name: "fail: dataVersion not set multiple params",
+			sr: SearchRequest{
+				Category: "cloud compute",
+				Region:   "Switzerland",
+			},
+			hasError: true,
+			expRes:   "",
+			expErr:   "error: dataVersion must be set",
+		},
+		{
+			name: "pass: parse request with params",
+			sr: SearchRequest{
+				DataVersion:    "^5",
+				Category:       "cloud computing - cpu",
+				ResultsPerPage: 1,
+			},
 
-	t.Run("fail: dataVersion not set", func(t *testing.T) {
-		_, err := parseSearchRequest(&SearchRequest{})
-		expectedErrorMsg := "error: dataVersion must be set"
-		assert.EqualErrorf(t, err, expectedErrorMsg, "Error should be: %v, got: %v", expectedErrorMsg, err)
-	})
+			hasError: false,
+			expRes:   "category=cloud+computing+-+cpu&data_version=%5E5&results_per_page=1",
+			expErr:   "",
+		},
+		{
+			name: "pass: parse request with multiword query",
+			sr: SearchRequest{
+				DataVersion: "^5",
+				Query:       "high voltage wind",
+			},
+			hasError: false,
+			expRes:   "data_version=%5E5&query=high+voltage+wind",
+			expErr:   "",
+		},
+		{
+			name: "pass: parse request with params and query",
+			sr: SearchRequest{
+				DataVersion:    "^5",
+				Category:       "cloud computing - cpu",
+				ResultsPerPage: 1,
+				Query:          "aws",
+			},
+			hasError: false,
+			expRes:   "category=cloud+computing+-+cpu&data_version=%5E5&query=aws&results_per_page=1",
+			expErr:   "",
+		},
+	}
 
-	t.Run("fail: dataVersion not set multiple params", func(t *testing.T) {
-		_, err := parseSearchRequest(&SearchRequest{Category: "cloud compute"})
-		expectedErrorMsg := "error: dataVersion must be set"
-		assert.EqualErrorf(t, err, expectedErrorMsg, "Error should be: %v, got: %v", expectedErrorMsg, err)
-	})
-
-	t.Run("pass: parse request with params", func(t *testing.T) {
-		sr := SearchRequest{
-			DataVersion:    "^5",
-			Category:       "cloud computing - cpu",
-			ResultsPerPage: 1,
-		}
-
-		expectedResult := "category=cloud+computing+-+cpu&data_version=%5E5&results_per_page=1"
-		result, err := parseSearchRequest(&sr)
-		assert.Nil(t, err)
-		assert.Equalf(t, expectedResult, result, "Result should be: %v, got: %v", expectedResult, result)
-	})
-
-	t.Run("pass: parse request with multiword query", func(t *testing.T) {
-		sr := SearchRequest{
-			DataVersion: "^5",
-			Query:       "high voltage wind",
-		}
-
-		expectedResult := "data_version=%5E5&query=high+voltage+wind"
-		result, err := parseSearchRequest(&sr)
-		assert.Nil(t, err)
-		assert.Equalf(t, expectedResult, result, "Result should be: %v, got: %v", expectedResult, result)
-	})
-
-	t.Run("pass: parse request with params and query", func(t *testing.T) {
-		sr := SearchRequest{
-			DataVersion:    "^5",
-			Category:       "cloud computing - cpu",
-			ResultsPerPage: 1,
-			Query:          "aws",
-		}
-
-		expectedResult := "category=cloud+computing+-+cpu&data_version=%5E5&query=aws&results_per_page=1"
-		result, err := parseSearchRequest(&sr)
-		assert.Nil(t, err)
-		assert.Equalf(t, expectedResult, result, "Result should be: %v, got: %v", expectedResult, result)
-	})
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			res, err := parseSearchRequest(&test.sr)
+			assert.Equalf(t, res, test.expRes, "Result should be: %v, got: %v", test.expRes, res)
+			if test.hasError {
+				assert.EqualErrorf(t, err, test.expErr, "Error should be: %v, got: %v", test.expErr, err)
+			} else {
+				assert.Nil(t, err)
+			}
+		})
+	}
 }
 
 func TestSearchRequest(t *testing.T) {
