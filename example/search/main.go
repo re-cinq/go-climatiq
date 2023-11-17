@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"go-climatiq/climatiq"
+	"github.com/re-cinq/go-climatiq/v2/climatiq"
 )
 
 func main() {
