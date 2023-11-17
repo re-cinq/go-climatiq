@@ -87,7 +87,7 @@ func (c *Client) Search(ctx context.Context, searchReq *SearchRequest) (*SearchR
 	}
 
 	if resp.StatusCode != 200 {
-		return nil, fmt.Errorf("error bad statuscode from server: %d", resp.StatusCode)
+		return nil, fmt.Errorf("error bad statuscode from server:%s", resp.Status)
 	}
 
 	defer resp.Body.Close()
