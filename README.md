@@ -1,5 +1,4 @@
 # go-climatiq
-A GO SDK for the Climatiq API
 
 The **go-climatiq** SDK is a Go (Golang) library that facilitates easy integration with the [Climatiq API](https://www.climatiq.io/). Emission factors are crucial in estimating carbon emissions for various activities, industries, or processes. This SDK simplifies the process of fetching emission factors and incorporating them into your applications for accurate carbon footprint calculations.
 
@@ -38,7 +37,7 @@ Check the [example](https://github.com/re-cinq/go-climatiq/tree/main/example) di
 If you find any issues or have suggestions for improvements, please open an issue or create a pull request on the GitHub repository. We are always open to contributions and help!
 
 ## License
-This SDK is licensed under the MIT License - see the LICENSE file for details.
+This SDK is licensed under the Apache-2.0 License
 
 ## Contact
 For any inquiries or support, please contact the maintainers: <br>
